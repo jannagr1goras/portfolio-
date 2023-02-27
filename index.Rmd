@@ -5,7 +5,7 @@ date: "2023-02-15"
 output: 
   flexdashboard::flex_dashboard:
     storyboard: true 
-runtime: shiny 
+self_contained: false
 ---
 
 
@@ -19,6 +19,7 @@ library(flexdashboard)
 library(htmltools)
 library(compmus)
 library(shiny)
+library(htmlwidgets)
 ```
 
 Corpus {.storyboard}
@@ -39,14 +40,15 @@ In my musical corpus, I seek to answer the question of what is **"sad girl music
 tag <- tags$iframe(
   style = "border-radius:12px",
   src = "https://open.spotify.com/embed/playlist/21Wi3Cdvvcc1DMMOJhRXLg?utm_source=generator",
-  width = '"100%"',
-  height = '"352"',
-  frameBorder = '"0"',
-  allowfullscreen = '""',
-  allow = '"autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"',
-  loading = '"lazy"'
+  width = "100%",
+  height = "352",
+  frameBorder = "0",
+  allowfullscreen = "",
+  allow = "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture",
+  loading = "lazy"
 )
-HTML(tag)
+print(tag)
+
 ```
 
 
@@ -69,7 +71,7 @@ corpus <-
 corpus |>                    # Start with awards.
   mutate(
     mode = ifelse(mode == 0, "Minor", "Major")
-  ) |>
+  ) |>  
   ggplot(                     # Set up the plot.
     aes(
       x = valence,
@@ -127,16 +129,43 @@ corpus |>                    # Start with awards.
     colour = "Mode",
     label = "Track name"
   )
-ggsave("corpus.pdf", plot=last_plot(), width=15, height = 10)
-ggplotly(plot=last_plot())
 
+p<- ggplotly(last_plot())
+p
 ```
 
 ***
+This scatterplot is a plotly interactive in rstudio, however when I knit the interaction dissapears. I will try to fix this as soon as possible! 
 
 In the scatterplot I coded, I was mainly interested in observing differences in energy, valence, as well as mode of songs which I would categorize as within the sad girl genre, and songs outside of the genre through which I could compare and accurately define characteristics of sad girl music. I made two separate playlists for the two categories - the "not sad girl music" encompassed music which is by artists within the sad girl genre (ie. Taylor Swift, Lorde, fka twigs), but whose albums such as "1989" - a pop masterpiece,  "Solar Power" - Lorde's healing maturity era and "Caprisongs", an R&B dance mixtape, are definitely outside of the genre through their high-energy, positive narrative. This was done with the purpose of uncovering the main differences that make sad girl music its own genre.  
 In comparing the two, I hypothesized that sad girl music would have lower energy and valence, given that the lyrics are predominantly negative and despite some energetic features, usually artists choose a breathy sad sound to their instrumentals. The scatterplot indeed revealed this overall assumption - but it is important to note that there are exceptions in both categories. Additionally, I think it's interesting how the sad girl genre has a more diverse range of modes, and also less loudness as compared to the not sad girl section. 
 
 ### Sad Girl Chromograms 
+
+```{r chromogram, echo = FALSE}
+song <-
+  get_tidy_audio_analysis("5enxwA8aAbwZbf5qCHORXi") |>
+  select(segments) |>
+  unnest(segments) |>
+  select(start, duration, pitches)
+
+song |>
+  mutate(pitches = map(pitches, compmus_normalise, "chebyshev")) |>
+  compmus_gather_chroma() |> 
+  ggplot(
+    aes(
+      x = start + duration / 2,
+      width = duration,
+      y = pitch_class,
+      fill = value
+    )
+  ) +
+  geom_tile() +
+  labs(x = "Time (s)", y = NULL, fill = "Magnitude") +
+  theme_minimal() +
+  scale_fill_viridis_c()
+
 ```
 
+***
+In this chromogram, I'm looking at the pitch distribution of **Taylor Swift's "All Too Well" (10 minute version)**, which is considered the magnum opus of the singer and one of the defining songs of the modern sad girl genre. I'm interested in seeing how throughout this long song, the pitches differ as the singer goes through different stages of grieving her last relationship, as pitches change whilst she goes from anger, sadness, depression, etc. I used a Chebyshev normalization measure to generate this chromogram. 
