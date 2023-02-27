@@ -2,52 +2,52 @@
 title: "janna's portfolio"
 author: "janna"
 date: "2023-02-15"
-output: html_document
+output: 
+  flexdashboard::flex_dashboard:
+    storyboard: true
+    theme: cosmo
+
 ---
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set( echo = FALSE, message = FALSE, warning = FALSE, results = FALSE)
-```
-
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
-
-#install ggplot2
-install.packages("ggplot2")
-
-#load ggplot2
 library(ggplot2)
-library (tidyverse)
-library (spotifyr)
+library(tidyverse)
+library(spotifyr)
+library(plotly)
+library(flexdashboard)
+```
+
+
+
+
 
 ```{r corpus, echo=FALSE}
+
+sadgirl <- get_playlist_audio_features(" ", "1aCB5tYDsZoHJLH6wXNd7T")
+notsadgirl <- get_playlist_audio_features (" ", "1dj5yWeujg3pPiIMEDakmm")
+corpus <-
+  bind_rows(
+    sadgirl |> mutate(category = "Sad Girl Music"),
+    notsadgirl |> mutate(category = "Not Sad Girl Music")
+  )
+
+
+
+
+
 corpus |>                    # Start with awards.
   mutate(
     mode = ifelse(mode == 0, "Minor", "Major")
   ) |>
-  ggplot (                     # Set up the plot.
+  ggplot(                     # Set up the plot.
     aes(
       x = valence,
       y = energy,
       size = loudness,
-      colour = mode
+      colour = mode,
+      label = track.name
     )
   )+
   geom_point() +              # Scatter plot.
@@ -56,14 +56,14 @@ corpus |>                    # Start with awards.
     aes(
       x = valence,
       y = energy,
-      label = label
+      label = label,
     ),
     data = 
       tibble(
         label = c(" ", " "),
         category = c("Not Sad Girl Music", "Sad Girl Music"),
         valence = c(0.090, 0.123),
-        energy = c(0.101, 0.967)
+        energy = c(0.101, 0.967),
       ),
     colour = "black",         # Override colour (not mode here).
     size = 3,                 # Override size (not loudness here).
@@ -95,9 +95,10 @@ corpus |>                    # Start with awards.
   labs(                       # Make the titles nice.
     x = "Valence",
     y = "Energy",
-    colour = "Mode"
+    colour = "Mode",
+    label = "Track name"
   )
-  
+ggsave("corpus.pdf", plot=last_plot(), width=15, height = 10)
+ggplotly(plot=last_plot())
+
 ```
-
-
