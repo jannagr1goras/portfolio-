@@ -39,14 +39,14 @@ In my musical corpus, I seek to answer the question of what is **"sad girl music
 tag <- tags$iframe(
   style = "border-radius:12px",
   src = "https://open.spotify.com/embed/playlist/21Wi3Cdvvcc1DMMOJhRXLg?utm_source=generator",
-  width = "100%",
-  height = "352",
-  frameBorder = "0",
-  allowfullscreen = "",
-  allow = "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture",
-  loading = "lazy"
+  width = '"100%"',
+  height = '"352"',
+  frameBorder = '"0"',
+  allowfullscreen = '""',
+  allow = '"autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"',
+  loading = '"lazy"'
 )
-print(tag)
+HTML(tag)
 ```
 
 
