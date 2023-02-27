@@ -16,15 +16,27 @@ library(tidyverse)
 library(spotifyr)
 library(plotly)
 library(flexdashboard)
+library(htmltools)
 ```
+
+Corpus {.storyboard}
+=========================================
+
 
 ### INTRODUCTION 
 
-"When you are young they assume you know nothing" 
-
+In my musical corpus, I seek to answer the question of what is **"sad girl music"**, what does it mean to be a **"sad girl"** singer, songwriter and producer? In aiming to answer such questions, I've amassed a musical corpus which reflects the most popular trends and artists within the sad girl genre, such as **Taylor Swift**'s pandemic sister albums *"folklore"* and *"evermore"*, as well as unique songwriters which have most recently gained popularity, such as **Phoebe Bridgers** with her *"Stranger in the alps"* and *"Punisher"* albums. Additionally, I've added well-known pillars of the genre, such as **Lana del Rey** and **Mitski**, as well as artists appreciated for their longevity and whose older songs have remained iconic - most specifically, **Fiona Apple**. Additionally, I aim to uncover what it means for an artist known for her **"sad girl music"** to diverge from said patterns and apperently go through her "healing era" - this can be observed in the commercial trends of artists such as **Lorde** and **fka twigs**, both included in the corpus. Finally, newcomers and new sounds and trends are also included in the corpus, through **Lizzy McAlpine, Gracie Abrams** and **Ethel Cain**, whose comparisons will help us understand the new and up and coming "sad girl" music, and how much it reflects the core ideas already installed by more popular artists. 
 
 *** 
- In my musical corpus, I seek to answer the question of what is "sad girl music", what does it mean to be a "sad girl" singer, songwriter and producer? In aiming to answer such questions, I've amassed a musical corpus which reflects the most popular trends and artists within the sad girl genre, such as Taylor Swift's pandemic sister albums "folklore" and "evermore", as well as unique songwriters which have most recently gained popularity, such as Phoebe Bridgers with her "Stranger in the alps" and "Punisher" albums. Additionally, I've added well-known pillars of the genre, such as Lana del Rey and Mitski, as well as artists appreciated for their longevity and whose older songs have remained iconic - most specifically, Fiona Apple. Additionally, I aim to uncover what it means for an artist known for her "sad girl music" to diverge from said patterns and apperently go through her "healing era" - this can be observed in the commercial trends of artists such as Lorde and fka twigs, both included in the corpus. Finally, newcomers and new sounds and trends are also included in the corpus, through Lizzy McAlpine, Gracie Abrams and Ethel Cain, whose comparisons will help us understand the new and up and coming "sad girl" music, and how much it reflects the core ideas already installed by more popular artists.
+
+**"When you are young they assume you know nothing" **
+<script src="https://open.spotify.com/embed-podcast/iframe-api/v1" async></script>
+```{r playlist, echo = FALSE}
+
+html <- '<iframe src="https://open.spotify.com/embed/playlist/21Wi3Cdvvcc1DMMOJhRXLg" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>'
+cat(html)
+
+```
 
 
 ### What Is Sad Girl Music, and What Is Not? 
